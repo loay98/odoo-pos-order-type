@@ -1,334 +1,114 @@
-\# POS Order Type (Odoo Module)
+# POS Order Type (Odoo Module)
 
-
-
-This module adds a mandatory \*\*Order Type selection\*\* in the POS before validating an order.
-
-
+This module adds a mandatory **Order Type** selection in Odoo POS before validating an order.
 
 Supported order types:
+- Delivery
+- Take Away
+- Dine In
 
+## Features
 
+- Forces cashier to select an order type before payment validation
+- Stores order type in backend model `pos.order`
+- Shows order type in POS order form and list views
+- Follows standard Odoo module structure
+- Compatible with Odoo 17 POS
 
-\* Delivery
+## Requirements
 
-\* Take Away
+- Docker Desktop
+- Git
+- Odoo 17 (Docker setup recommended)
+- PostgreSQL (via Docker)
 
-\* Dine In
+## Installation
 
-
-
-Developed for Odoo POS customization assessment.
-
-
-
-\---
-
-
-
-\# Features
-
-
-
-\* Forces cashier to select order type before payment validation
-
-\* Stores order type in backend (`pos.order`)
-
-\* Visible in POS order backend form and list view
-
-\* Follows standard Odoo module structure
-
-\* Works in Odoo 17 POS
-
-
-
-\---
-
-
-
-\# Requirements
-
-
-
-\* Docker Desktop
-
-\* Git
-
-\* Odoo 17 (via Docker recommended)
-
-\* PostgreSQL (handled by Docker)
-
-
-
-\---
-
-
-
-\# Installation Steps
-
-
-
-\## 1. Clone the repository
-
-
+### 1. Clone the repository
 
 ```bash
-
-git clone https://github.com/YOUR\_USERNAME/pos\_order\_type.git
-
-cd pos\_order\_type
-
+git clone https://github.com/loay98/odoo-pos-order-type.git
+cd odoo-pos-order-type
 ```
 
-
-
-\---
-
-
-
-\## 2. Start Odoo using Docker
-
-
-
-Run:
-
-
+### 2. Start services
 
 ```bash
-
 docker compose up -d
-
 ```
 
+Open Odoo at:
 
-
-Then open:
-
-
-
-```
-
+```text
 http://localhost:8069
-
 ```
 
+### 3. Create a database
 
+When opening Odoo for the first time, create a database with your own credentials.
 
-\---
+> **Security note:** Do not commit real passwords or personal credentials to the repository.
 
+### 4. Install Point of Sale
 
+In Odoo:
+1. Go to **Apps**
+2. Search for **Point of Sale**
+3. Install it
 
-\## 3. Create Database
+### 5. Add this custom module
 
+Ensure the module exists at:
 
-
-When opening Odoo for the first time:
-
-
-
-\* Master Password:
-
-
-
+```text
+custom_addons/pos_order_type
 ```
 
-ix2c-hi5f-iki2
-
-```
-
-
-
-Create database:
-
-
-
-\* Database Name: `pos17`
-
-\* Email: `loayalshaddakh@gmail.com`
-
-\* Password: `@Ll123456`
-
-\* Language: English
-
-\* Country: Bahrain
-
-
-
-Click \*\*Create Database\*\*
-
-
-
-\---
-
-
-
-\## 4. Install POS App
-
-
-
-Inside Odoo:
-
-
-
-\* Go to Apps
-
-\* Search: \*\*Point of Sale\*\*
-
-\* Install it
-
-
-
-\---
-
-
-
-\## 5. Add Custom Module
-
-
-
-Ensure your module is inside:
-
-
-
-```
-
-custom\_addons/pos\_order\_type
-
-```
-
-
-
-Then restart Docker:
-
-
+Then restart:
 
 ```bash
-
 docker compose restart
-
 ```
 
+### 6. Update app list and install module
 
+1. Enable Developer Mode (**Settings → Activate Developer Mode**)
+2. Go to **Apps → Update Apps List**
+3. Search for `POS Order Type`
+4. Install the module
 
-\---
+## How to test
 
+1. Open a POS session
+2. Add products
+3. Click **Payment**
+4. Confirm order type is required (Delivery / Take Away / Dine In)
+5. Validate the order
+6. Check backend under **POS Orders** for the `Order Type` value
 
+## Technical notes
 
-\## 6. Update Apps List
+- Backend model extended: `pos.order`
+- POS JavaScript patched with OWL
+- Order type persists through POS export/import flow
+- Validation is blocked until order type is selected
 
+## Project structure
 
-
-Enable Developer Mode:
-
-
-
-\* Settings → Activate Developer Mode
-
-
-
-Then:
-
-
-
-\* Apps → Update Apps List
-
-\* Search: `POS Order Type`
-
-\* Install
-
-
-
-\---
-
-
-
-\## 7. Test the Feature
-
-
-
-1\. Open POS session
-
-2\. Add products
-
-3\. Click \*\*Payment\*\*
-
-4\. You will be forced to select:
-
-
-
-&#x20;  \* Delivery
-
-&#x20;  \* Take Away
-
-&#x20;  \* Dine In
-
-5\. Validate order
-
-6\. Check backend:
-
-
-
-&#x20;  \* POS Orders → Order Type column
-
-
-
-\---
-
-
-
-\# Technical Notes
-
-
-
-\* Backend model extended: `pos.order`
-
-\* POS JS patched using OWL framework
-
-\* Order type stored in POS JSON export/import cycle
-
-\* Validation hook prevents order confirmation without selection
-
-
-
-\---
-
-
-
-\# Project Structure
-
-
-
+```text
+custom_addons/
+└── pos_order_type/
+	├── __manifest__.py
+	├── models/
+	├── views/
+	└── static/
+		└── src/
+			├── js/
+			├── xml/
+			└── css/
 ```
 
-pos\_order\_type/
-
-├── \_\_manifest\_\_.py
-
-├── models/
-
-├── views/
-
-├── static/
-
-│   └── src/
-
-│       ├── js/
-
-│       ├── xml/
-
-│       └── css/
-
-```
-
-
-
-\---
-
-
-
-\# Author
-
-
+## Author
 
 Loay Alshaddakh
 
